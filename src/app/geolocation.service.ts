@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Geolocation } from '@capacitor/geolocation';
 
-interface Coords {
+export interface LocationInfo {
   latitude: number | null;
   longitude: number | null;
+  watchId: string | null;
 }
 
 @Injectable({
@@ -12,12 +13,13 @@ interface Coords {
 })
 export class GeolocationService {
 
-  private coordsSubject: BehaviorSubject<Coords> = new BehaviorSubject({
+  private locationInfoSubject: BehaviorSubject<LocationInfo> = new BehaviorSubject({
     latitude: null,
-    longitude: null
+    longitude: null,
+    watchId: null
   });
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  public coords$: Observable<Coords> = this.coordsSubject;
+  public locationInfo$: Observable<LocationInfo> = this.locationInfoSubject;
 
   constructor() {
     this.start();
@@ -38,10 +40,20 @@ export class GeolocationService {
 
         const { coords: {latitude, longitude } } = position;
 
-        this.coordsSubject.next({latitude, longitude});
+        // this.locationInfoSubject.next({latitude, longitude});
+        this.updateLocationInfoSubject({latitude, longitude});
       }
-    );
+      );
 
-    console.log({ watchId });
+    // console.log({ watchId });
+    this.updateLocationInfoSubject({watchId});
+
+  }
+
+  updateLocationInfoSubject(newData: Partial<LocationInfo>) {
+    this.locationInfoSubject.next({
+      ...this.locationInfoSubject.value,
+      ...newData
+    });
   }
 }

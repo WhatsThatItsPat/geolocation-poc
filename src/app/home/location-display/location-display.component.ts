@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { LocationInfo } from 'src/app/geolocation.service';
 
 @Component({
   selector: 'app-location-display',
@@ -7,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class LocationDisplayComponent implements OnInit {
 
-  @Input() coords;
+  @Input() locationInfo: LocationInfo;
 
   constructor() { }
 

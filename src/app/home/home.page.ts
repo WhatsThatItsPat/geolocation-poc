@@ -8,7 +8,7 @@ import { GeolocationService } from '../geolocation.service';
 })
 export class HomePage {
 
-  coords$ = this.geolocationService.coords$;
+  locationInfo$ = this.geolocationService.locationInfo$;
 
   constructor(
     private geolocationService: GeolocationService
