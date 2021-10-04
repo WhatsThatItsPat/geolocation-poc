@@ -1,3 +1,13 @@
+<ion-card *ngIf="locationInfo.permissionState === 'denied'">
+  <ion-card-header>
+    <ion-card-title>Location Permission Required</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    Please give this app permission to track your location.
+  </ion-card-content>
+</ion-card>
+
 <ion-list>
   <ion-item>
     <ion-label>Latitude</ion-label>

@@ -16,6 +16,7 @@
   <app-location-display [locationInfo]="locationInfo$ | async"></app-location-display>
 
     <ion-button
+      class="ion-padding"
       *ngIf="!(locationInfo$ | async)?.watchId"
       (click)="start()"
       expand="block"
@@ -23,6 +24,7 @@
     >Start Tracking Location</ion-button>
     
     <ion-button
+      class="ion-padding"
       *ngIf="(locationInfo$ | async)?.watchId"
       (click)="stop()"
       expand="block"

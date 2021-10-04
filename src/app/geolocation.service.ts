@@ -6,6 +6,7 @@ export interface LocationInfo {
   latitude: number | null;
   longitude: number | null;
   watchId: string | null;
+  permissionState: string | null;
 }
 
 @Injectable({
@@ -16,12 +17,23 @@ export class GeolocationService {
   private locationInfoSubject: BehaviorSubject<LocationInfo> = new BehaviorSubject({
     latitude: null,
     longitude: null,
-    watchId: null
+    watchId: null,
+    permissionState: null
   });
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public locationInfo$: Observable<LocationInfo> = this.locationInfoSubject;
 
-  constructor() {}
+  constructor() {
+    this.checkAndUpdatePermissions();
+  }
+
+  updateLocationInfoSubject(newData: Partial<LocationInfo>) {
+    this.locationInfoSubject.next({
+      ...this.locationInfoSubject.value,
+      ...newData
+    });
+  }
+
 
   async start() {
 
@@ -36,21 +48,19 @@ export class GeolocationService {
       (position, error) => {
         console.log({position, error});
 
-        const { coords: {latitude, longitude } } = position;
+        if (!!position) {
+          const { coords: {latitude, longitude } } = position;
+          this.updateLocationInfoSubject({latitude, longitude});
+        }
 
-        this.updateLocationInfoSubject({latitude, longitude});
+        // Whether we get a position or error, we save the permission.
+        this.checkAndUpdatePermissions();
+
       }
-      );
+    );
 
     this.updateLocationInfoSubject({watchId});
 
-  }
-
-  updateLocationInfoSubject(newData: Partial<LocationInfo>) {
-    this.locationInfoSubject.next({
-      ...this.locationInfoSubject.value,
-      ...newData
-    });
   }
 
 
@@ -66,5 +76,14 @@ export class GeolocationService {
         watchId: null
       });
     }
+  }
+
+  private async checkAndUpdatePermissions() {
+    const { location: permissionState } = await Geolocation.checkPermissions();
+
+    if (this.locationInfoSubject.value.permissionState !== permissionState) {
+      this.updateLocationInfoSubject({permissionState});
+    }
+
   }
 }
