@@ -1,6 +1,14 @@
-<p>
-  location-display works!
-</p>
+<ion-list>
+  <ion-item>
+    <ion-label>Latitude</ion-label>
+    <ion-note slot="end">{{ coords.latitude || ""}}</ion-note>
+  </ion-item>
+  
+  <ion-item>
+    <ion-label>Longitude</ion-label>
+    <ion-note slot="end">{{ coords.longitude || ""}}</ion-note>
+  </ion-item>
+</ion-list>
 
-<pre class="ion-padding">coords: {{coords | json}}</pre>
+<!-- <pre class="ion-padding">coords: {{coords | json}}</pre> -->
 
