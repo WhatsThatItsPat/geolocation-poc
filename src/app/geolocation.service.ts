@@ -21,9 +21,7 @@ export class GeolocationService {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public locationInfo$: Observable<LocationInfo> = this.locationInfoSubject;
 
-  constructor() {
-    this.start();
-  }
+  constructor() {}
 
   async start() {
 
@@ -40,12 +38,10 @@ export class GeolocationService {
 
         const { coords: {latitude, longitude } } = position;
 
-        // this.locationInfoSubject.next({latitude, longitude});
         this.updateLocationInfoSubject({latitude, longitude});
       }
       );
 
-    // console.log({ watchId });
     this.updateLocationInfoSubject({watchId});
 
   }
@@ -55,5 +51,20 @@ export class GeolocationService {
       ...this.locationInfoSubject.value,
       ...newData
     });
+  }
+
+
+  async stop() {
+    if (!!this.locationInfoSubject.value.watchId) {
+      await Geolocation.clearWatch({
+        id: this.locationInfoSubject.value.watchId
+      });
+
+      this.updateLocationInfoSubject({
+        latitude: null,
+        longitude: null,
+        watchId: null
+      });
+    }
   }
 }

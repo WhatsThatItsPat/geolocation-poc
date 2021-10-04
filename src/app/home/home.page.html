@@ -15,6 +15,20 @@
 
   <app-location-display [locationInfo]="locationInfo$ | async"></app-location-display>
 
+    <ion-button
+      *ngIf="!(locationInfo$ | async)?.watchId"
+      (click)="start()"
+      expand="block"
+      color="success"
+    >Start Tracking Location</ion-button>
+    
+    <ion-button
+      *ngIf="(locationInfo$ | async)?.watchId"
+      (click)="stop()"
+      expand="block"
+      color="danger"
+    >Stop Tracking Location</ion-button>
+
   <pre class="ion-padding">locationInfo$: {{locationInfo$ | async | json}}</pre>
 
 </ion-content>
