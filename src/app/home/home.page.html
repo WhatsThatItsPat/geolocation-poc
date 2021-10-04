@@ -13,6 +13,8 @@
     </ion-toolbar>
   </ion-header>
 
+  <app-location-display [coords]="coords$ | async"></app-location-display>
+
   <pre class="ion-padding">coords$: {{coords$ | async | json}}</pre>
 
 </ion-content>
