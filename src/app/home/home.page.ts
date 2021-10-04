@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GeolocationService } from '../geolocation.service';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,10 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  coords$ = this.geolocationService.coords$;
+
+  constructor(
+    private geolocationService: GeolocationService
+  ) {}
 
 }
