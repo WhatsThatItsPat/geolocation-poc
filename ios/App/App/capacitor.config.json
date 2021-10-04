@@ -1,1 +1,6 @@
-{}
+{
+	"appId": "io.ionic.starter",
+	"appName": "geolocation-poc",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
