@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -23,14 +23,18 @@ export class GeolocationService {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public locationInfo$: Observable<LocationInfo> = this.locationInfoSubject;
 
-  constructor() {
+  constructor(
+    private zone: NgZone
+  ) {
     this.checkAndUpdatePermissions();
   }
 
   updateLocationInfoSubject(newData: Partial<LocationInfo>) {
-    this.locationInfoSubject.next({
-      ...this.locationInfoSubject.value,
-      ...newData
+    this.zone.run(() => {
+      this.locationInfoSubject.next({
+        ...this.locationInfoSubject.value,
+        ...newData
+      });
     });
   }
 
